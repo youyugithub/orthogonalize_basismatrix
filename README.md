@@ -2,7 +2,7 @@
 ```
 orthogonalize_basismatrix_stable<-function(basismatrix){
   
-  normalize<-function(x)sign(x[length(x)])*x/sqrt(sum(x^2)/ntimepoints)
+  normalize<-function(x)x/sqrt(sum(x^2)/ntimepoints)
   
   nbasis<-ncol(basismatrix)
   ntimepoints<-nrow(basismatrix)
@@ -68,7 +68,6 @@ orthogonalize_basismatrix_stable<-function(basismatrix){
 }
 
 orthogonalize_basismatrix_twice<-function(basismatrix){
-  basismatrix<-bs(alltimepoints,knots=knots,degree=1,intercept=T)
   basismatrix_transform<-orthogonalize_basismatrix_stable(basismatrix)
   transform<-MASS::ginv(basismatrix)%*%basismatrix_transform
   basismatrix_transform2<-orthogonalize_basismatrix_stable(basismatrix%*%transform)
@@ -141,7 +140,9 @@ orthogonalize_basismatrix<-function(basismatrix){
 
 ##### test
 # a_bs<-splines::bs(1:ntimepoints,df=8,intercept=T)
+# matplot(a_bs,type="l")
 # matplot(orthogonalize_basismatrix_stable(a_bs),type="l")
+# matplot(orthogonalize_basismatrix_twice(a_bs),type="l")
 # basismatrix_ortho<-orthogonalize_basismatrix_stable(a_bs)
 # t(basismatrix_ortho)%*%basismatrix_ortho
 # temp<-orthogonalize_basismatrix_stable(orthogonalize_basismatrix_stable(a_bs))
